@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+
+{% block content %}
+<main class="mt-5 pt-4">
+  <div class="container dark-grey-text mt-5">
+
+    <!--Grid row-->
+    <div class="row wow fadeIn d-flex">
+
+      <!--Grid column-->
+      <div class="col-md-6 mb-4 d-flex justify-content-end">
+
+        <div style="height:400px; width: 400px;">
+          <img src="{{ object.image.url }}" class="img-fluid" alt="" style="height:100%; width:100%">
+        </div>
+
+      </div>
+      <!--Grid column-->
+
+      <!--Grid column-->
+      <div class="col-md-6 mb-4">
+
+        <!--Content-->
+        <div class="p-4">
+
+          <div class="mb-3">
+            <a href="">
+              <span class="badge purple mr-1">{{ object.get_category_display }}</span>
+            </a>
+          </div>
+          <div class="mb-3">
+            <p class="lead font-weight-bold" style="font-size: x-large;">{{object.title}}</p>
+          </div>
+          <p class="lead">
+            {% if object.discount_price %}
+            <span class="mr-1">
+              <del>${{ object.price }}</del>
+            </span>
+            <span>${{ object.discount_price }}</span>
+            {% else %}
+            <span>${{ object.price }}</span>
+            {% endif %}
+          </p>
+
+          <p class="lead font-weight-bold">Description</p>
+
+          <p>{{ object.description }}</p>
+
+          {% comment %} <form class="d-flex justify-content-left">
+            <!-- Default input -->
+            <input type="number" value="1" aria-label="Search" class="form-control" style="width: 100px">
+            <button class="btn btn-primary btn-md my-0 p" type="submit">
+              Add to cart
+              <i class="fas fa-shopping-cart ml-1"></i>
+            </button>
+
+          </form> {% endcomment %}
+          <a href="{{ object.get_add_to_cart_url }}" class="btn btn-primary btn-md my-0 p">
+            Add to cart
+            <i class="fas fa-shopping-cart ml-1"></i>
+          </a>
+          <a href="{{ object.get_remove_from_cart_url }}" class="btn btn-danger btn-md my-0 p">
+            Remove from cart
+          </a>
+
+        </div>
+        <!--Content-->
+
+      </div>
+      <!--Grid column-->
+
+    </div>
+    <!--Grid row-->
+
+    <hr>
+
+    <!--Grid row-->
+    <div class="row d-flex justify-content-center wow fadeIn">
+
+      <!--Grid column-->
+      <div class="col-md-6 text-center">
+
+        <h4 class="my-4 h4">Additional information</h4>
+
+        <p>{{object.full_description}}</p>
+
+      </div>
+      <!--Grid column-->
+
+    </div>
+    <!--Grid row-->
+
+    <hr>
+
+    <div class="text-center" style="width: 100%;">
+
+      <h4 class="mt-4 h4 mb-5">Recommended Products</h4>
+
+    </div>
+
+    <!--Grid row-->
+    <div class="row wow fadeIn d-flex justify-content-center">
+      {% for item in recommended_objects %}
+      <div class="col-lg-3 col-md-6 mb-4">
+
+        <div class="card">
+
+          <div class="view overlay">
+            {% comment %} <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/12.jpg"
+              class="card-img-top" {% endcomment %} <img src="{{ item.image.url }}" class="card-img-top"
+              style="height:200px;">
+            <a href="{{ item.get_absolute_url }}">
+              <div class="mask rgba-white-slight"></div>
+            </a>
+          </div>
+
+          <div class="card-body text-center">
+            <h5>
+              <strong>
+                <a href="{{ item.get_absolute_url }}" class="dark-grey-text">
+                  <div class="d-flex justify-content-center">
+                    <span style="height:23px; overflow: hidden;">{{ item.title }}</span>
+                  </div>
+                </a>
+              </strong>
+            </h5>
+
+          </div>
+
+        </div>
+
+      </div>
+      {% endfor %}
+      <!--Grid column-->
+
+    </div>
+    <!--Grid row-->
+
+  </div>
+</main>
+
+{% endblock content %}
