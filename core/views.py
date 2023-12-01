@@ -14,8 +14,8 @@ from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 from django.views.generic import View
 from . import category
-from .forms import CheckoutForm, CouponForm, RefundForm, PaymentForm
-from .models import Item, OrderItem, Order, Address, Payment, Coupon, Refund, UserProfile
+from .forms import CheckoutForm, CouponForm, RefundForm, PaymentForm, ReviewCommentForm
+from .models import Item, OrderItem, Order, Address, Payment, Coupon, Refund, UserProfile, ReviewComment
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -428,13 +428,29 @@ def filter_recommended_items(all_simliar_items,id):
         recommended_items = items
     return recommended_items
 
+
+
 def item_detail_view(request, slug):
     id = slug.split('-')[-1]
     item = Item.objects.get(pk=id)
     categories_dict = dict((x, y) for y, x in category.CATEGORY_CHOICES)
     all_simliar_items = Item.objects.filter(category=categories_dict[item.get_category_display()])
     recommended_items = filter_recommended_items(all_simliar_items,id)
-    return render(request, 'product.html', {'object':item, 'recommended_objects':recommended_items})
+    comments = ReviewComment.objects.filter(product_id=id)[:10]
+
+    if request.method == 'POST':
+        form = ReviewCommentForm(request.POST)
+        if form.is_valid():
+            obj = ReviewComment()
+            obj.product_id = id
+            obj.rating = form.cleaned_data['rating']
+            obj.comment = form.cleaned_data['comment']
+            obj.save()
+    else:
+        form = ReviewCommentForm()
+
+    
+    return render(request, 'product.html', {'object':item, 'recommended_objects':recommended_items, 'review_and_comments':comments})
 
 @login_required
 def add_to_cart(request, slug):

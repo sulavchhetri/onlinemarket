@@ -1,5 +1,47 @@
 {% extends "base.html" %}
 
+{% block css %}
+
+  .rating {
+    display: flex;
+    margin-top: -10px;
+    flex-direction: row-reverse;
+    margin-left: -4px;
+    float: left;
+  }
+
+  .rating>input {
+    display: none
+  }
+
+  .rating>label {
+    position: relative;
+    width: 19px;
+    font-size: 25px;
+    color: #ff0000;
+    cursor: pointer;
+  }
+
+  .rating>label::before {
+    content: "\2605";
+    position: absolute;
+    opacity: 0
+  }
+
+  .rating>label:hover:before,
+  .rating>label:hover~label:before {
+    opacity: 1 !important
+  }
+
+  .rating>input:checked~label:before {
+    opacity: 1
+  }
+
+  .rating:hover>input:checked~label:before {
+    opacity: 0.4
+  }
+{% endblock %}
+
 {% block content %}
 <main class="mt-5 pt-4">
   <div class="container mt-5">
@@ -90,6 +132,86 @@
     </div>
     <!--Grid row-->
 
+    <hr>
+    <h4 class="my-4 h4">Reviews and Comments</h4>
+    <form method="POST" action="." class="card">
+      {% csrf_token %}
+      <div class="row">
+
+        <div class="col-10">
+
+          <div class="comment-box ml-2">
+
+            <h4 style="color: black;">Add a comment</h4>
+
+            <div class="rating">
+              <input type="radio" name="rating" value="5" id="5"><label for="5">☆</label>
+              <input type="radio" name="rating" value="4" id="4"><label for="4">☆</label>
+              <input type="radio" name="rating" value="3" id="3"><label for="3">☆</label>
+              <input type="radio" name="rating" value="2" id="2"><label for="2">☆</label>
+              <input type="radio" name="rating" value="1" id="1"><label for="1">☆</label>
+            </div>
+
+            <div class="comment-area">
+
+              <textarea class="form-control" name="comment" what is your view?" rows="4"></textarea>
+
+            </div>
+
+            <div class="comment-btns mt-2">
+
+              <div class="row">
+
+                <div class="col-6">
+
+                  <div class="pull-left">
+
+                    <button class="btn btn-success btn-sm">Cancel</button>
+
+                  </div>
+
+                </div>
+
+                <div class="col-6">
+
+                  <div class="pull-right">
+
+                    <button type="submit" class="btn btn-success send btn-sm">Send <i
+                        class="fa fa-long-arrow-right ml-1"></i></button>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+          </div>
+
+        </div>
+
+
+      </div>
+
+    </form>
+    <hr>
+    <div class="row d-flex justify-content-center wow fadeIn">
+
+      <!--Grid column-->
+      <div class="col-md-6 text-center">
+        {% for item in review_and_comments %}
+        <hr style="color: whitesmoke;">
+        <p>{{item.comment}}</p>
+        <span>{{item.rating}}</span>
+        <hr style="color: whitesmoke;">
+        {% endfor %}
+
+      </div>
+      <!--Grid column-->
+
+    </div>
     <hr>
 
     <div class="text-center" style="width: 100%;">

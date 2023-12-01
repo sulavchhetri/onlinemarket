@@ -28,6 +28,10 @@ class UserProfile(models.Model):
     def __str__(self):
         return self.user.username
 
+class ReviewComment(models.Model):
+    product_id = models.IntegerField(null=True, default=None)
+    rating = models.IntegerField(default=5)
+    comment = models.CharField(max_length=150)
 
 class Item(models.Model):
     title = models.CharField(max_length=100)
