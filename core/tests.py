@@ -1,4 +1,3 @@
-# Create your tests here, dynamic pagination, http response
 from django.test import TestCase,RequestFactory
 from django.urls import reverse
 from django.utils import timezone
